@@ -94,10 +94,10 @@ function questionPage(){
 
   let questionPage = `
   <div class="card">
-    <h2>Question ${store.questionNumber +1}</h2>
+    <h2>Question ${store.questionNumber +1} out of ${store.questions.length}</h2>
     <h3>${question.question}</h3>
     <form>
-        <input type="radio" name="answer" value="${question.answers[0]}">
+        <input type="radio" name="answer" value="${question.answers[0]}" required="required">
         <label>${question.answers[0]}</label>
         <input type="radio" name="answer" value="${question.answers[1]}">
         <label>${question.answers[1]}</label>
@@ -175,7 +175,7 @@ function incorrectResultPage(){
     let finalResultsPage =
     ` <div class="card">
       <h1>Congrats you Finished!</h1>
-      <p>Your total score is ${store.score} out of a possible ${store.questionNumber - 1}.</p>
+      <p>Your total score is ${store.score} out of a possible ${store.questionNumber}.</p>
       <button id="start">Restart Quiz</button>
       </div>`;
       return finalResultsPage
