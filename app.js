@@ -1,6 +1,3 @@
-/**
- * Example store structure
- */
 const store = {
   // 5 or more questions are required
   questions: [
@@ -160,9 +157,7 @@ function render(){
 
 function checkAnswer(){
   const selectedAnswer = $('input[name="answer"]:checked').val();
-  if(store.questionumber === store.questions.length){
-    $('main').html(finalResultspage())
-}else if (selectedAnswer === store.questions[store.questionNumber].correctAnswer) {
+ if (selectedAnswer === store.questions[store.questionNumber].correctAnswer) {
     store.score++;
     $('main').html(correctResultPage())
   }
