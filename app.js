@@ -1,3 +1,6 @@
+/**
+ * Example store structure
+ */
 const store = {
   // 5 or more questions are required
   questions: [
@@ -14,7 +17,7 @@ const store = {
     {
       question: 'What entity boasts a gravitational pull so powerfull even light cannot escape?',
       answers: [
-        'Black hole',
+        'Black Hole',
         'Sun',
         'Neutron Star',
         'Jupiter',
@@ -33,7 +36,7 @@ const store = {
     },
     {
       question: 'How old is the solar system?',
-      Answers: [
+      answers: [
         '800 Million Years Old',
         '11.2 Million Years Old',
         '11 Billion Years Old',
@@ -55,6 +58,7 @@ const store = {
   questionNumber: 0,
   score: 0
 };
+
 
 /**
  * 
@@ -107,39 +111,74 @@ function questionPage(){
     return questionPage;
 }
 
-function finalResultspage(){
-  let finalResultsPage =
-  ` <div class="card">
-    <h1>Congrats you Finished!</h1>
-    <p>Your total score is ${store.score} out of a possible ${store.questionNumber - 1}.</p>
-    <button id="start">Restart Quiz</button>
-    </div>`;
-    return finalResultspage
-}
-
 function correctResultPage(){
+  const currentQuestionNumber = store.questionNumber - 1
+  
   let correctResultPage = `
     <div class="card">
     <h1>Great!</h1>
-    <p>You got it right - ${store.questions[store.questionNumber].correctAnswer} is correct!</p>
+    <p>You got it right - ${store.questions[currentQuestionNumber].correctAnswer} is correct!</p>
     <p>Your total score is ${store.score}.</p>
     <button id="next">Next Question</button>
     </div>`;
-  return correctResultPage
+
+  let correctResultFinalPreviewPage = `
+  <div class="card">
+  <h1>Great!</h1>
+  <p>You got it right - ${store.questions[currentQuestionNumber].correctAnswer} is correct!</p>
+  <p>Go to the next page to see your final results!</p>
+  <button id="final">Final Results</button>
+  </div>`;
+
+  if (store.questionNumber !== store.questions.length){
+    return correctResultPage;
+  }
+
+  else if (store.questionNumber === store.questions.length){
+    return correctResultFinalPreviewPage;
+  }
+  //maybe change in this part - if question number equals total question, go to final result page 
 }
 
 function incorrectResultPage(){
+  const currentQuestionNumber = store.questionNumber - 1
+  
   let incorrectResultPage = `
   <div class="card">
     <h1>Oh no!</h1>
-    <p>You chose the wrong answer. The correct answer was ${store.questions[store.questionNumber].correctAnswer}.</p>
+    <p>You chose the wrong answer. The correct answer was ${store.questions[currentQuestionNumber].correctAnswer}.</p>
     <p>Your total score is ${store.score}.</p>
     <button id="next">Next Question</button>
     </div>`;
 
-    return incorrectResultPage
+
+    let incorrectResultFinalPreviewPage = `
+  <div class="card">
+  <h1>Oh no!</h1>
+  <p>You chose the wrong answer. The correct answer was ${store.questions[currentQuestionNumber].correctAnswer}.</p>
+  <p>Go to the next page to see your final results!</p>
+  <button id="final">Final Results</button>
+  </div>`;
   
-    // then on the button click you can add to the questionNumber
+  if (store.questionNumber !== store.questions.length){
+    return incorrectResultPage;
+  }
+
+  else if (store.questionNumber === store.questions.length){
+    return incorrectResultFinalPreviewPage;
+  }
+    //maybe change in this part - if question number equals total question, go to final result page 
+    //if question number is not total question, return incorrectPage; if true, finalResult
+  }
+
+  function finalResultsPage(){
+    let finalResultsPage =
+    ` <div class="card">
+      <h1>Congrats you Finished!</h1>
+      <p>Your total score is ${store.score} out of a possible ${store.questionNumber - 1}.</p>
+      <button id="start">Restart Quiz</button>
+      </div>`;
+      return finalResultsPage
   }
 
 /********** RENDER FUNCTION(S) **********/
@@ -157,13 +196,17 @@ function render(){
 
 function checkAnswer(){
   const selectedAnswer = $('input[name="answer"]:checked').val();
- if (selectedAnswer === store.questions[store.questionNumber].correctAnswer) {
+  if (selectedAnswer === store.questions[store.questionNumber].correctAnswer) {
+    store.questionNumber++;
     store.score++;
     $('main').html(correctResultPage())
   }
   else if (selectedAnswer !== store.questions[store.questionNumber].correctAnswer) {
+    store.questionNumber++;
     $('main').html(incorrectResultPage())
   }
+  
+
   
 // save for button on correctResult and incorrectResult  store.questionNumber++;
   // if right, go to correctResults
@@ -192,8 +235,14 @@ function handleAnswerSubmit(){
 function handleNextQuestion(){
   $('main').on('click', '#next', function(){
     console.log("clicked Next Question")
-    store.questionNumber++;
     render();
+  })
+}
+
+function finalResultsClick(){
+  $('main').on('click', '#final', function(){
+    console.log("clicked Final Results")
+    $('main').html(finalResultsPage());
   })
 }
 
@@ -202,6 +251,7 @@ function main(){
   handleStartQuiz();
   handleAnswerSubmit();
   handleNextQuestion();
+  finalResultsClick()
 }
 
 
