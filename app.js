@@ -5,26 +5,55 @@ const store = {
   // 5 or more questions are required
   questions: [
     {
-      question: 'What color is broccoli?',
+      question: 'How many planets are in the solar system?',
       answers: [
-        'red',
-        'orange',
-        'pink',
-        'green'
+        '10',
+        '7',
+        '9',
+        '8'
       ],
-      correctAnswer: 'green'
+      correctAnswer: '8',
     },
     {
-      question: 'What is the current year?',
+      question: 'What entity boasts a gravitational pull so powerfull even light cannot escape?',
       answers: [
-        '1970',
-        '2015',
-        '2019',
-        '2005'
+        'Black hole',
+        'Sun',
+        'Neutron Star',
+        'Jupiter',
       ],
-      correctAnswer: '2019'
-    }
-  ],
+      correctAnswer: 'Black Hole',
+    },
+    {
+      question: 'What is the closet star after the sun?',
+      answers: [
+        'Beta Centauri',
+        'Milky Way',
+        'Alpha Centauri A',
+        'North Star',
+      ],
+      correctAnswer: 'Alpha Centauri A',
+    },
+    {
+      question: 'How old is the solar system?',
+      Answers: [
+        '800 Million Years Old',
+        '11.2 Million Years Old',
+        '11 Billion Years Old',
+        '13.8 Billion Years Old',
+      ],
+      correctAnswer: '13.8 Billion Years Old',
+    },
+    {
+      question: 'What planet does the moon Europa orbit?',
+      answers: [
+        'Neptune',
+        'Jupiter',
+        'Venus',
+        'Pluto',
+      ],
+      correctAnswer: 'Jupiter',
+    }],
   quizStarted: false,
   questionNumber: 0,
   score: 0
@@ -81,6 +110,16 @@ function questionPage(){
     return questionPage;
 }
 
+function finalResultspage(){
+  let finalResultsPage =
+  ` <div class="card">
+    <h1>Congrats you Finished!</h1>
+    <p>Your total score is ${store.score} out of a possible ${store.questionNumber - 1}.</p>
+    <button id="start">Restart Quiz</button>
+    </div>`;
+    return finalResultspage
+}
+
 function correctResultPage(){
   let correctResultPage = `
     <div class="card">
@@ -121,7 +160,9 @@ function render(){
 
 function checkAnswer(){
   const selectedAnswer = $('input[name="answer"]:checked').val();
-  if (selectedAnswer === store.questions[store.questionNumber].correctAnswer) {
+  if(store.questionumber === store.questions.length){
+    $('main').html(finalResultspage())
+}else if (selectedAnswer === store.questions[store.questionNumber].correctAnswer) {
     store.score++;
     $('main').html(correctResultPage())
   }
